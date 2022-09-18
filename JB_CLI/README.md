@@ -1,5 +1,5 @@
 # JB_simple_cli
-This repo contains implementation of my first project in JetBrains Academy course (https://hyperskill.org/tracks/25) - simple CLI program in ([JB_CLI.go](./JB_CLI.go)).
+This repo contains implementation of my first project in JetBrains Academy course (https://hyperskill.org/tracks/25) - simple CLI program in [JB_CLI.go](./JB_CLI.go).
 
 ### About CLI
 Program represents simple notepad with following functionality:  
