@@ -53,7 +53,7 @@ func (CLI *simple_notepad) create(stdin_words_slice *[]string) {
 	// check if storage is full
 	if uint(len(CLI.notes_storage)) == CLI.storage_cap {
 
-		fmt.Println("[Error] Notepad is full")
+		fmt.Printf("[Error] Notepad is full\n\n")
 
 	} else {
 
@@ -67,14 +67,14 @@ func (CLI *simple_notepad) create(stdin_words_slice *[]string) {
 
 				CLI.notes_storage = append(CLI.notes_storage, rest_line)
 
-				fmt.Println("[OK] The note was successfully created")
+				fmt.Printf("[OK] The note was successfully created\n\n")
 
 				return
 
 			}
 		}
 
-		fmt.Println("[Error] Missing note argument")
+		fmt.Printf("[Error] Missing note argument\n\n")
 	}
 
 }
@@ -85,18 +85,19 @@ func (CLI *simple_notepad) list() {
 			fmt.Printf("[Info] %d: %s\n", idx+1, val)
 		}
 	} else {
-		fmt.Println("[Info] Notepad is empty")
+		fmt.Printf("[Info] Notepad is empty\n")
 	}
+
+	fmt.Println()
 
 }
 func (CLI *simple_notepad) clear() {
 
 	if CLI.notes_storage != nil {
-		fmt.Println("[OK] All notes were successfully deleted")
+		fmt.Printf("[OK] All notes were successfully deleted\n\n")
 		CLI.notes_storage = nil
-		CLI.storage_cap = 0
 	} else {
-		fmt.Println("[Info] Notepad is already empty")
+		fmt.Printf("[Info] Notepad is already empty\n\n")
 	}
 
 }
@@ -109,7 +110,7 @@ func (CLI *simple_notepad) update(stdin_words_slice *[]string) {
 			position, err := strconv.Atoi((*stdin_words_slice)[1])
 
 			if err != nil || position <= 0 {
-				fmt.Printf("[Error] Invalid position: %s\n", (*stdin_words_slice)[1])
+				fmt.Printf("[Error] Invalid position: %s\n\n", (*stdin_words_slice)[1])
 				return
 			}
 
@@ -117,11 +118,11 @@ func (CLI *simple_notepad) update(stdin_words_slice *[]string) {
 
 			case uint(position) > CLI.storage_cap:
 
-				fmt.Printf("[Error] Position %d is out of the boundary [1, %d]\n", position, CLI.storage_cap)
+				fmt.Printf("[Error] Position %d is out of the boundary [1, %d]\n\n", position, CLI.storage_cap)
 
 			case position > len(CLI.notes_storage):
 
-				fmt.Println("[Error] There is nothing to update")
+				fmt.Printf("[Error] There is nothing to update\n\n")
 
 			default:
 
@@ -130,18 +131,18 @@ func (CLI *simple_notepad) update(stdin_words_slice *[]string) {
 				if strings.TrimSpace(rest_line) != "" {
 
 					CLI.notes_storage[position-1] = rest_line
-					fmt.Printf("[OK] The note at position %d was successfully updated\n", position)
+					fmt.Printf("[OK] The note at position %d was successfully updated\n\n", position)
 					return
 
 				}
 			}
 
 		} else {
-			fmt.Println("[Error] Missing note argument")
+			fmt.Printf("[Error] Missing note argument\n\n")
 		}
 
 	} else {
-		fmt.Println("[Error] Missing position argument")
+		fmt.Printf("[Error] Missing position argument\n\n")
 	}
 
 }
@@ -152,7 +153,7 @@ func (CLI *simple_notepad) delete(stdin_words_slice *[]string) {
 		position, err := strconv.Atoi((*stdin_words_slice)[1])
 
 		if err != nil || position <= 0 {
-			fmt.Printf("[Error] Invalid position: %s\n", (*stdin_words_slice)[1])
+			fmt.Printf("[Error] Invalid position: %s\n\n", (*stdin_words_slice)[1])
 			return
 		}
 
@@ -160,21 +161,21 @@ func (CLI *simple_notepad) delete(stdin_words_slice *[]string) {
 
 		case uint(position) > CLI.storage_cap:
 
-			fmt.Printf("[Error] Position %d is out of boundaries [1, %d]\n", position, CLI.storage_cap)
+			fmt.Printf("[Error] Position %d is out of boundaries [1, %d]\n\n", position, CLI.storage_cap)
 
 		case position > len(CLI.notes_storage):
 
-			fmt.Println("[Error] There is nothing to delete")
+			fmt.Printf("[Error] There is nothing to delete\n\n")
 
 		default:
 
 			CLI.notes_storage = append(CLI.notes_storage[:position-1], CLI.notes_storage[position:]...)
-			fmt.Printf("[OK] The note at position %d was successfully deleted\n", position)
+			fmt.Printf("[OK] The note at position %d was successfully deleted\n\n", position)
 
 		}
 
 	} else {
-		fmt.Println("[Error] Missing position argument")
+		fmt.Printf("[Error] Missing position argument\n\n")
 	}
 }
 func (CLI *simple_notepad) exit() {
@@ -183,7 +184,7 @@ func (CLI *simple_notepad) exit() {
 	fmt.Println("[Info] Bye!")
 }
 func (CLI *simple_notepad) help() {
-	fmt.Printf("This is an `simple notepad`.\nFollowing commands are available:\n\t- create <note>: adds typed text as note to the notepad;\n\t- list: output all the existing notes;\n\t- clear: clean up notepad, erase all the notes;\n\t- update <position> <new note>: update note at pointed position;\n\t- delete <position>: erase note at pointed position;\n\t- exit: stop notepad\n")
+	fmt.Printf("This is an `simple notepad`.\nFollowing commands are available:\n\t- create <note>: adds typed text as note to the notepad;\n\t- list: output all the existing notes;\n\t- clear: clean up notepad, erase all the notes;\n\t- update <position> <new note>: update note at pointed position;\n\t- delete <position>: erase note at pointed position;\n\t- exit: stop notepad\n\n")
 }
 func (CLI *simple_notepad) set_capacity(value uint) {
 	CLI.notes_storage = make([]string, 0, value)
@@ -204,15 +205,16 @@ func fill_capacity(notepad Notepad) bool {
 
 	var storage_cap uint = 0
 	fmt.Scanf("%d", &storage_cap)
+	fmt.Println()
 
 	if storage_cap <= 0 {
 
-		fmt.Printf("[Error] Invalid capacity parameter type: must input natural number\n")
+		fmt.Printf("[Error] Invalid capacity parameter type: must input natural number\n\n")
 		return false
 
 	} else if storage_cap > 100 {
 
-		fmt.Printf("[Error] Notepad buffer oveflow: entered capacity -> %d; available max capacity -> 100\n", storage_cap)
+		fmt.Printf("[Error] Notepad buffer oveflow: entered capacity -> %d; available max capacity -> 100\n\n", storage_cap)
 		return false
 
 	}
@@ -232,6 +234,8 @@ func get_input(notepad Notepad) []string {
 
 	// check if input is complete
 	if scanner.Scan() {
+
+		fmt.Println()
 
 		line := scanner.Text()
 
@@ -276,7 +280,7 @@ func switch_command(input_slice *[]string, notepad Notepad) {
 
 	default:
 
-		fmt.Println("[Error] Unknown command")
+		fmt.Printf("[Error] Unknown command\n\n")
 
 	}
 }
